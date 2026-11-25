@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МЕДИС — медицинская система</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="mis.css">
+    <script type="module" src="app.js"></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <header class="logo">
+            <h2>🤍 МЕДИС</h2>
+            <p>Медицинская система</p>
+        </header>
+        <nav aria-label="Главная навигация">
+            <a href="#overview">Главная</a>
+            <a href="#patients">Пациенты</a>
+            <a href="#appointments">Приёмы</a>
+            <a href="#prescriptions">Назначения</a>
+        </nav>
+        <address class="sidebar-contact">
+            Регистратура<br>
+            +7 (900) 000-00-00
+        </address>
+    </aside>
+
+    <header class="page-header">
+        <section class="header-top">
+            <section>
+                <p class="small-title">ПАНЕЛЬ УПРАВЛЕНИЯ</p>
+                <h1>Медицинская информационная система</h1>
+            </section>
+            <p class="profile">Администратор</p>
+        </section>
+        <form class="search-form" role="search" onsubmit="return false">
+            <label for="search">Поиск по приёмам</label>
+            <input type="search" id="search" placeholder="Введите имя пациента или врача">
+        </form>
+    </header>
+
+    <main id="overview">
+        <section class="welcome">
+            <h2>Добро пожаловать!</h2>
+            <p>Общая информация о работе медицинского центра.</p>
+        </section>
+
+        <section class="statistics" aria-label="Статистика">
+            <article class="stat-card"><p class="stat-name">Пациенты</p><p class="stat-number" id="patients-count">0</p></article>
+            <article class="stat-card"><p class="stat-name">Приёмы</p><p class="stat-number" id="appointments-count">0</p></article>
+            <article class="stat-card"><p class="stat-name">Назначения</p><p class="stat-number" id="prescriptions-count">0</p></article>
+        </section>
+
+        <section class="content-section filter-panel" aria-labelledby="filters-title">
+            <header class="section-header">
+                <section>
+                    <p class="small-title">ПОИСК И ОТБОР</p>
+                    <h2 id="filters-title">Фильтры приёмов</h2>
+                </section>
+            </header>
+            <form id="filters-form" class="filters-form">
+                <section class="filter-field">
+                    <label for="doctor-filter">Врач</label>
+                    <select id="doctor-filter">
+                        <option value="all">Все врачи</option>
+                        <option value="Д-р Смирнов">Д-р Смирнов</option>
+                        <option value="Д-р Иванова">Д-р Иванова</option>
+                        <option value="Д-р Сидоров">Д-р Сидоров</option>
+                    </select>
+                </section>
+                <fieldset class="filter-field">
+                    <legend>Статус приёма</legend>
+                    <label class="choice"><input type="checkbox" name="status" value="Запланирован" checked><span>Запланирован</span></label>
+                    <label class="choice"><input type="checkbox" name="status" value="Завершён" checked><span>Завершён</span></label>
+                </fieldset>
+                <fieldset class="filter-field">
+                    <legend>Важность</legend>
+                    <label class="choice"><input type="checkbox" id="important-filter"><span>Только важные</span></label>
+                </fieldset>
+                <fieldset class="filter-field">
+                    <legend>Вид отображения</legend>
+                    <label class="choice"><input type="radio" name="view" value="table" checked><span>Таблица</span></label>
+                    <label class="choice"><input type="radio" name="view" value="cards"><span>Карточки</span></label>
+                </fieldset>
+                <button type="button" class="reset-button" id="reset-filters">Сбросить фильтры</button>
+            </form>
+        </section>
+
+        <section class="content-section" id="appointments">
+            <header class="section-header">
+                <section>
+                    <p class="small-title">РАСПИСАНИЕ</p>
+                    <h2>Последние приёмы</h2>
+                </section>
+                <p class="section-note" id="results-count">Список записей</p>
+            </header>
+            <div class="table-scroll" id="table-view">
+                <table>
+                    <caption>Информация о приёмах пациентов. Нажмите на название колонки для сортировки.</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col"><button class="sort-button" data-sort="patient">Пациент <span>↕</span></button></th>
+                            <th scope="col"><button class="sort-button" data-sort="doctor">Врач <span>↕</span></button></th>
+                            <th scope="col">Жалоба</th>
+                            <th scope="col"><button class="sort-button" data-sort="date">Дата <span>↕</span></button></th>
+                            <th scope="col">Статус</th>
+                            <th scope="col">Приоритет</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointments-table"></tbody>
+                </table>
+            </div>
+            <section id="appointment-cards" class="appointment-cards" aria-label="Приёмы в виде карточек" hidden></section>
+        </section>
+
+        <section class="two-columns">
+            <section class="content-section" id="patients">
+                <header class="section-header">
+                    <section><p class="small-title">КАРТОЧКИ КЛИЕНТОВ</p><h2>Пациенты</h2></section>
+                </header>
+                <ul class="data-list" id="patients-list"></ul>
+            </section>
+            <section class="content-section" id="prescriptions">
+                <header class="section-header">
+                    <section><p class="small-title">ЛЕЧЕНИЕ</p><h2>Назначения</h2></section>
+                </header>
+                <ul class="data-list" id="prescriptions-list"></ul>
+            </section>
+        </section>
+
+        <aside class="info-panel">
+            <h2>Информация</h2>
+            <p>Данные на странице загружаются из отдельного JavaScript-файла.</p>
+        </aside>
+    </main>
+
+    <footer class="page-footer"><p>© 2026 МЕДИС. Учебный проект.</p></footer>
+</body>
+</html>
+<button class="menu-button"
+id="menuButton">
+///
+</button>
+<div class="overlay" id="overlay"></div>
+<nav class="sidebar" id="sidebar">
+    <a href="#">Главная</a>
+    <a href="#">Пациент</a>
+    <a href="#">записи</a>
+</nav>
